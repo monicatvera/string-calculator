@@ -1,19 +1,4 @@
-//import { calculate } from "../core/stringCalculator";
-
-export function sumNumbers(expression: string) {
-    if (!expression) {
-      return 0;
-    }
-
-    if (expression.includes(',')) {
-      const tokens = expression.split(',');
-      return tokens
-        .map((token) => Number(token))
-        .reduce((previousNumber, currentNumber) => previousNumber + currentNumber);
-    }
-
-    return Number(expression);
-  }
+import { sumNumbers } from "../core/stringCalculator";
 
 describe('The string calculator', () => {
     it('does not increment the total in case of null or empty expression', () => {
@@ -28,5 +13,17 @@ describe('The string calculator', () => {
     it('sums all numbers separated by commas', () => {
         expect(sumNumbers('1,2')).toBe(3);
         expect(sumNumbers('1,2,3')).toBe(6);
+    });
+
+    it('does not increment the total in case of non numeric symbol', () => {
+      expect(sumNumbers('a')).toBe(0);
+      expect(sumNumbers('1,a')).toBe(1);
+      expect(sumNumbers('1,a,2')).toBe(3);
+    });
+
+    it('sums all the numbers separated by custom separator', () => {
+      expect(sumNumbers('//#/3#2')).toBe(5);
+      expect(sumNumbers('//#/3,2')).toBe(0);
+      expect(sumNumbers('//%/1%2%3')).toBe(6);
     });
 })
